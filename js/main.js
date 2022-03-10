@@ -142,7 +142,7 @@ function removeItemFromCart(id) {
 }
 
 function renderCartItem(cartData) {
-  const { name, totalAfterPrice, image, id } = cartData;
+  const { name, totalAfterPrice, image, id, quantity } = cartData;
   return `<div class="cart-item">
             <img
               src=${image}
@@ -151,11 +151,11 @@ function renderCartItem(cartData) {
               class="cart-item-img"
             />
             <div class="cart-item-info">
-              <div class="heading-3 bold">${name}</div>
+              <div class="heading-3 bold">${name} <span>x ${quantity}</span></div>
               <div class="heading-3">${
                 numberWithCommas(totalAfterPrice)
               } VND</div>
-              <a href="#" class="cart-item-remove" data-id=${id}>Remove</a>
+              <a href="#" class="cart-item-remove" data-id=${id}>Xóa</a>
             </div>
           </div>`;
 }
@@ -171,11 +171,11 @@ function renderOrderItem(cartData) {
             <div class="item-info">
               <div class="text-15 bold">${name}</div>
               <div class="w-commerce-commercecheckoutorderitemquantitywrapper">
-                <div class="text-15">Quantity:</div>
+                <div class="text-15">Số lượng:&nbsp;</div>
                 <div class="text-15">${quantity}</div>
               </div>
             </div>
-            <div class="text-18">${numberWithCommas(totalAfterPrice)}</div>
+            <div class="text-18">${numberWithCommas(totalAfterPrice)} VND</div>
           </div>
           `;
 }

@@ -4571,6 +4571,11 @@ li {
   align-items: flex-start;
 }
 
+.cart-item-info .heading-3 span {
+  font-weight: 400;
+  font-size: 18px;
+}
+
 .cart-item-remove {
   color: #ff8946;
   text-decoration: none;
@@ -5857,4 +5862,28 @@ li {
   font-weight: 400;
   font-style: normal;
   font-display: swap;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.cart-wrap {
+  pointer-events:none;
+}
+.cart-wrap.show {
+  pointer-events: auto;
+}
+.cart-container {
+  pointer-events: none;
+}
+.cart-container.show {
+  pointer-events: auto;
+}
+.cart-list {
+  max-height: calc(100vh - 234px);
+  overflow: scroll;
+}
+.navbar {
+  background-color: white !important;
 }
