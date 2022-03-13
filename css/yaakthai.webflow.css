@@ -5920,3 +5920,6 @@ body {
 .form-done-wrap .done-content div {
   text-align: center;
 }
+.form-done-wrap .done-content .btplaceorder {
+  margin: 0;
+}
