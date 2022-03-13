@@ -58,7 +58,7 @@ function getCurrentPage() {
 // Fetching CMS START//
 function fetchProducts() {
   const parser = new DOMParser();
-  return fetch('/ajax-product-collection.html')
+  return fetch('./ajax-product-collection.html')
     .then((response) => response.text())
     .then((html) => {
       const doc = parser.parseFromString(html, 'text/html');
@@ -257,8 +257,8 @@ function handleAddToCart() {
 handleAddToCart();
 
 function checkoutSuccess() {
-  $('.w-form-done').show();
-  $('#wf-form-checkout_form').hide();
+  $('.form-done-wrap').addClass('show');
+  //$('#wf-form-checkout_form').hide();
 
   resetCart();
   renderCart();
@@ -271,7 +271,7 @@ function checkoutError(error) {
     ({ errorType }) => errorType === 'INVALID_EMAIL'
   );
   if (isEmpty(invalidEmailError)) {
-    alert('Something wrong happen. Please try again');
+    alert('Đã có lỗi xảy rạ Bạn hãy thử lại nhé ^^!');
     return;
   }
   alert('Your email is invalid. Please try again');
