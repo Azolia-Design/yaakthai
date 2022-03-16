@@ -13,6 +13,7 @@ const $orderListEle = $('.order-item-list');
 const $totalPriceOrderEle = $('.total-price');
 
 const $checkoutForm = $('#wf-form-checkout_form');
+const $partyForm = $('#party-form');
 
 const portalId = '21519253';
 const formId = '33b40444-e243-4a09-b973-8b90621f129a';
@@ -264,6 +265,17 @@ function checkoutSuccess() {
   renderCart();
 }
 
+// function partySuccess() {
+//   $('.form-done-wrap').addClass('show');
+// }
+
+// $('.btn-close').on('click', (e) => {
+//   e.preventDefault();
+//   $('.form-done-wrap').removeClass('show');
+//   $('.pop-up').css('opacity','0');
+//   $('.pop-up').css('display','none');
+// })
+
 function checkoutError(error) {
   const errorResponse = error.responseJSON;
   const errorDetails = errorResponse.errors;
@@ -276,6 +288,19 @@ function checkoutError(error) {
   }
   alert('Your email is invalid. Please try again');
 }
+
+// function partyError(error) {
+//   const errorResponse = error.responseJSON;
+//   const errorDetails = errorResponse.errors;
+//   const invalidEmailError = errorDetails.find(
+//     ({ errorType }) => errorType === 'INVALID_EMAIL'
+//   );
+//   if (isEmpty(invalidEmailError)) {
+//     alert('Đã có lỗi xảy rạ Bạn hãy thử lại nhé ^^!');
+//     return;
+//   }
+//   alert('Your email is invalid. Please try again');
+// }
 
 function handleCheckout() {
   const cart = getCart();
@@ -345,6 +370,34 @@ function handleCheckout() {
   });
 }
 handleCheckout();
+
+// function handleParty() {
+//   $partyForm.on('submit', (e) => {
+//     e.preventDefault();
+//     console.log(parseCartData);
+//     const data = {
+      
+//     };
+//     const final_data = JSON.stringify(data);
+//     $.ajax({
+//       url: sendSubmissionUrl,
+//       method: 'POST',
+//       data: final_data,
+//       dataType: 'json',
+//       headers: {
+//         accept: 'application/json',
+//         'Access-Control-Allow-Origin': '*',
+//       },
+//       contentType: 'application/json',
+//       success: function (response) {
+//         partySuccess();
+//       },
+//       error: function (error) {
+//         partyError(error);
+//       },
+//     });
+//   });
+// }
 
 window.onload = () => {
   fetchProducts().then(() => {
