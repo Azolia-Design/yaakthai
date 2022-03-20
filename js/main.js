@@ -18,6 +18,10 @@ const $partyForm = $('#party-form');
 const portalId = '21519253';
 const formId = '33b40444-e243-4a09-b973-8b90621f129a';
 const sendSubmissionUrl = `https://api.hsforms.com/submissions/v3/integration/submit/${portalId}/${formId}`;
+
+const portalPartyId = '21519253';
+const formPortalId = '5e6d4c98-5868-4d11-81b1-52c79478e7db';
+const sendSubmissionPartyUrl = `https://api.hsforms.com/submissions/v3/integration/submit/${portalPartyId}/${formPortalId}`;
 // Utils START //
 function numberWithCommas(num) {
   return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
@@ -74,7 +78,7 @@ function fetchProducts() {
         );
         return productItem;
       });
-    })
+    });
 }
 
 function getProductById(id) {
@@ -153,9 +157,9 @@ function renderCartItem(cartData) {
             />
             <div class="cart-item-info">
               <div class="heading-3 bold">${name} <span>x ${quantity}</span></div>
-              <div class="heading-3">${
-                numberWithCommas(totalAfterPrice)
-              } VND</div>
+              <div class="heading-3">${numberWithCommas(
+                totalAfterPrice
+              )} VND</div>
               <a href="#" class="cart-item-remove" data-id=${id}>Xóa</a>
             </div>
           </div>`;
@@ -232,12 +236,12 @@ function handleCartVisible() {
   });
 
   $('.cart-wrap').on('click', (e) => {
-    if ($('.cart-container').is(":hover") == false) {
+    if ($('.cart-container').is(':hover') == false) {
       e.preventDefault();
       $('.cart-wrap').removeClass('show');
-      $('.cart-container').removeClass('show'); 
+      $('.cart-container').removeClass('show');
     }
-  })
+  });
 
   $btnCloseCart.on('click', (e) => {
     e.preventDefault();
@@ -265,16 +269,16 @@ function checkoutSuccess() {
   renderCart();
 }
 
-// function partySuccess() {
-//   $('.form-done-wrap').addClass('show');
-// }
+function partySuccess() {
+  $('.form-done-wrap').addClass('show');
+}
 
-// $('.btn-close').on('click', (e) => {
-//   e.preventDefault();
-//   $('.form-done-wrap').removeClass('show');
-//   $('.pop-up').css('opacity','0');
-//   $('.pop-up').css('display','none');
-// })
+$('.btn-close').on('click', (e) => {
+  e.preventDefault();
+  $('.form-done-wrap').removeClass('show');
+  $('.pop-up').css('opacity', '0');
+  $('.pop-up').css('display', 'none');
+});
 
 function checkoutError(error) {
   const errorResponse = error.responseJSON;
@@ -289,18 +293,18 @@ function checkoutError(error) {
   alert('Your email is invalid. Please try again');
 }
 
-// function partyError(error) {
-//   const errorResponse = error.responseJSON;
-//   const errorDetails = errorResponse.errors;
-//   const invalidEmailError = errorDetails.find(
-//     ({ errorType }) => errorType === 'INVALID_EMAIL'
-//   );
-//   if (isEmpty(invalidEmailError)) {
-//     alert('Đã có lỗi xảy rạ Bạn hãy thử lại nhé ^^!');
-//     return;
-//   }
-//   alert('Your email is invalid. Please try again');
-// }
+function partyError(error) {
+  const errorResponse = error.responseJSON;
+  const errorDetails = errorResponse.errors;
+  const invalidEmailError = errorDetails.find(
+    ({ errorType }) => errorType === 'INVALID_EMAIL'
+  );
+  if (isEmpty(invalidEmailError)) {
+    alert('Đã có lỗi xảy rạ Bạn hãy thử lại nhé ^^!');
+    return;
+  }
+  alert('Your email is invalid. Please try again');
+}
 
 function handleCheckout() {
   const cart = getCart();
@@ -371,33 +375,60 @@ function handleCheckout() {
 }
 handleCheckout();
 
-// function handleParty() {
-//   $partyForm.on('submit', (e) => {
-//     e.preventDefault();
-//     console.log(parseCartData);
-//     const data = {
-      
-//     };
-//     const final_data = JSON.stringify(data);
-//     $.ajax({
-//       url: sendSubmissionUrl,
-//       method: 'POST',
-//       data: final_data,
-//       dataType: 'json',
-//       headers: {
-//         accept: 'application/json',
-//         'Access-Control-Allow-Origin': '*',
-//       },
-//       contentType: 'application/json',
-//       success: function (response) {
-//         partySuccess();
-//       },
-//       error: function (error) {
-//         partyError(error);
-//       },
-//     });
-//   });
-// }
+function handleParty() {
+  $partyForm.on('submit', (e) => {
+    e.preventDefault();
+    const formObject = mapFormToObject(e.target);
+    console.log(formObject);
+    const data = {
+      fields: [
+        {
+          name: 'firstname',
+          value: `${formObject.full_name} - ${formObject.phone}`,
+        },
+        {
+          name: 'email',
+          value: formObject.Email,
+        },
+        {
+          name: 'phone',
+          value: `${formObject.Phone}`,
+        },
+        {
+          name: 'amount',
+          value: formObject['S-l-ng-ng-i'],
+        },
+        {
+          name: 'reserved_date',
+          value: formObject['Ng-y-t'],
+        },
+      ],
+      context: {
+        pageUri: window.location.href,
+        pageName: 'Reservation Form',
+      },
+    };
+    const final_data = JSON.stringify(data);
+    $.ajax({
+      url: sendSubmissionPartyUrl,
+      method: 'POST',
+      data: final_data,
+      dataType: 'json',
+      headers: {
+        accept: 'application/json',
+        'Access-Control-Allow-Origin': '*',
+      },
+      contentType: 'application/json',
+      success: function (response) {
+        partySuccess();
+      },
+      error: function (error) {
+        partyError(error);
+      },
+    });
+  });
+}
+handleParty();
 
 window.onload = () => {
   fetchProducts().then(() => {
