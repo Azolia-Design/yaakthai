@@ -384,7 +384,7 @@ function handleParty() {
       fields: [
         {
           name: 'firstname',
-          value: `${formObject.full_name} - ${formObject.phone}`,
+          value: `${formObject.name}`,
         },
         {
           name: 'email',
